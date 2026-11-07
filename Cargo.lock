@@ -1064,9 +1064,9 @@ dependencies = [
 [[package]]
 name = "craft-bitstream"
 version = "0.1.0"
-source = "git+https://github.com/speedcraft-labs/craft-libs?rev=20cc6894fc3acf56042ab2b5144642ead4e487bd#20cc6894fc3acf56042ab2b5144642ead4e487bd"
+source = "git+https://github.com/storytold/craft-libs?rev=20cc6894fc3acf56042ab2b5144642ead4e487bd#20cc6894fc3acf56042ab2b5144642ead4e487bd"
 dependencies = [
- "craft-media 0.1.0 (git+https://github.com/speedcraft-labs/craft-libs?rev=20cc6894fc3acf56042ab2b5144642ead4e487bd)",
+ "craft-media 0.1.0 (git+https://github.com/storytold/craft-libs?rev=20cc6894fc3acf56042ab2b5144642ead4e487bd)",
 ]
 
 [[package]]
@@ -1082,7 +1082,7 @@ source = "git+https://github.com/storytold/craft-libs?rev=c5a1cbfb5f9049f9270955
 [[package]]
 name = "craft-h264"
 version = "0.1.0"
-source = "git+https://github.com/speedcraft-labs/craft-libs?rev=20cc6894fc3acf56042ab2b5144642ead4e487bd#20cc6894fc3acf56042ab2b5144642ead4e487bd"
+source = "git+https://github.com/storytold/craft-libs?rev=20cc6894fc3acf56042ab2b5144642ead4e487bd#20cc6894fc3acf56042ab2b5144642ead4e487bd"
 dependencies = [
  "craft-bitstream",
  "rayon",
@@ -1115,7 +1115,7 @@ dependencies = [
 [[package]]
 name = "craft-media"
 version = "0.1.0"
-source = "git+https://github.com/speedcraft-labs/craft-libs?rev=20cc6894fc3acf56042ab2b5144642ead4e487bd#20cc6894fc3acf56042ab2b5144642ead4e487bd"
+source = "git+https://github.com/storytold/craft-libs?rev=20cc6894fc3acf56042ab2b5144642ead4e487bd#20cc6894fc3acf56042ab2b5144642ead4e487bd"
 dependencies = [
  "thiserror 2.0.21",
 ]

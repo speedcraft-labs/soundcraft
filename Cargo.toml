@@ -16,7 +16,7 @@ soundcraft-time = { path = "crates/time" }
 soundcraft-audio-io = { path = "crates/audio-io" }
 soundcraft-midi = { path = "crates/midi" }
 soundcraft-video = { path = "crates/video" }
-craft-h264 = { git = "https://github.com/speedcraft-labs/craft-libs", rev = "20cc6894fc3acf56042ab2b5144642ead4e487bd", default-features = false }
+craft-h264 = { git = "https://github.com/storytold/craft-libs", rev = "20cc6894fc3acf56042ab2b5144642ead4e487bd", default-features = false }
 soundcraft-dsp = { path = "crates/dsp" }
 soundcraft-clap-host = { path = "crates/clap-host" }
 soundcraft-vst3-host = { path = "crates/vst3-host" }
