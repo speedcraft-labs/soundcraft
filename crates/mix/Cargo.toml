@@ -23,6 +23,7 @@ rayon.workspace = true
 
 [dev-dependencies]
 allocation-counter = "0.8.1"
+sha2 = "0.10.9"
 
 [lints]
 workspace = true

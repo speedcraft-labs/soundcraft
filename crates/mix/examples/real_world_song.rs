@@ -5,11 +5,11 @@
 
 use std::error::Error;
 use std::fs;
-use std::hash::{Hash, Hasher};
 use std::path::PathBuf;
 use std::sync::Arc;
 use std::time::Instant;
 
+use sha2::{Digest, Sha256};
 use soundcraft_audio_io::{AudioBuffer, EncodeOptions, decode, encode};
 use soundcraft_model::{ChannelFormat, Clip, Session, SourceAudio, SourceId, TrackKind};
 use soundcraft_time::{Range, SampleRate};
@@ -69,16 +69,15 @@ fn main() -> Result<(), Box<dyn Error>> {
     let wav = encode(&bounce, &EncodeOptions::default())?;
     fs::write(&output, &wav)?;
     let elapsed_ns = started.elapsed().as_nanos();
-    let mut hasher = std::collections::hash_map::DefaultHasher::new();
-    wav.hash(&mut hasher);
+    let mut hasher = Sha256::new();
+    hasher.update(&wav);
     for note in &notes {
-        note.start.hash(&mut hasher);
-        note.end.hash(&mut hasher);
-        note.pitch.hash(&mut hasher);
-        note.velocity.hash(&mut hasher);
+        hasher.update((note.start as u64).to_le_bytes());
+        hasher.update((note.end as u64).to_le_bytes());
+        hasher.update([note.pitch, note.velocity]);
     }
     println!("CRAFT_JOURNEY_NS={elapsed_ns}");
-    println!("CRAFT_OUTPUT_SHA256={:016x}", hasher.finish());
+    println!("CRAFT_OUTPUT_SHA256={:x}", hasher.finalize());
     println!("song_seconds={:.3} regions=16 scrub_peak={listened_peak:.6} detected_notes={}", info.duration_secs(), notes.len());
     Ok(())
 }
