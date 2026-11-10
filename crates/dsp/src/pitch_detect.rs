@@ -1,6 +1,8 @@
 //! Monophonic pitch tracking (YIN, de Cheveigné & Kawahara 2002) and note segmentation, for
 //! audio-to-MIDI conversion.
 
+use rustfft::{FftPlanner, num_complex::Complex};
+
 /// A detected note: start and end in samples, MIDI pitch, and a velocity estimate.
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct DetectedNote {
@@ -21,15 +23,37 @@ pub fn yin(frame: &[f32], sample_rate: f32, min_hz: f32, max_hz: f32, threshold:
         return None;
     }
     let w = frame.len() - max_tau;
+    // Compute sum(frame[j] * frame[j + tau]) for the fixed YIN window with one
+    // cross-correlation. The prefix-energy terms are range sums, so each lag is O(1).
+    let fft_len = (frame.len() + w - 1).next_power_of_two();
+    let mut planner = FftPlanner::<f32>::new();
+    let forward = planner.plan_fft_forward(fft_len);
+    let inverse = planner.plan_fft_inverse(fft_len);
+    let mut prefix = vec![Complex::new(0.0, 0.0); fft_len];
+    let mut signal = vec![Complex::new(0.0, 0.0); fft_len];
+    for (slot, &sample) in prefix.iter_mut().zip(&frame[..w]) {
+        slot.re = sample;
+    }
+    for (slot, &sample) in signal.iter_mut().zip(frame) {
+        slot.re = sample;
+    }
+    forward.process(&mut prefix);
+    forward.process(&mut signal);
+    for (signal, prefix) in signal.iter_mut().zip(prefix) {
+        *signal *= prefix.conj();
+    }
+    inverse.process(&mut signal);
+
+    let mut energy = vec![0.0f32; frame.len() + 1];
+    for (i, sample) in frame.iter().enumerate() {
+        energy[i + 1] = energy[i] + sample * sample;
+    }
     let mut d = vec![0.0f32; max_tau + 1];
+    let scale = 1.0 / fft_len as f32;
     for (tau, dv) in d.iter_mut().enumerate().skip(1) {
-        let mut sum = 0.0f32;
-        for j in 0..w {
-            let (Some(a), Some(b)) = (frame.get(j), frame.get(j + tau)) else { break };
-            let diff = a - b;
-            sum += diff * diff;
-        }
-        *dv = sum;
+        let left_energy = energy[w];
+        let right_energy = energy[tau + w] - energy[tau];
+        *dv = (left_energy + right_energy - 2.0 * signal[tau].re * scale).max(0.0);
     }
     // Cumulative mean normalised difference.
     let mut cmnd = vec![1.0f32; max_tau + 1];
@@ -112,6 +136,20 @@ pub fn audio_to_notes(audio: &[f32], sample_rate: f32) -> Vec<DetectedNote> {
 mod tests {
     use super::*;
 
+    fn direct_difference(frame: &[f32], max_tau: usize) -> Vec<f32> {
+        let w = frame.len() - max_tau;
+        (0..=max_tau)
+            .map(|tau| {
+                (0..w)
+                    .map(|j| {
+                        let diff = frame[j] - frame[j + tau];
+                        diff * diff
+                    })
+                    .sum()
+            })
+            .collect()
+    }
+
     fn tone(f: f32, secs: f32, sr: f32) -> Vec<f32> {
         (0..(secs * sr) as usize).map(|i| (i as f32 * f * std::f32::consts::TAU / sr).sin() * 0.5).collect()
     }
@@ -121,6 +159,48 @@ mod tests {
         let t = tone(440.0, 0.1, 48_000.0);
         let f = yin(&t[..2048], 48_000.0, 50.0, 1600.0, 0.15).unwrap();
         assert!((f - 440.0).abs() < 2.0, "{f}");
+    }
+
+    #[test]
+    fn fft_difference_matches_direct_yin_sum() {
+        let mut state = 7u32;
+        let frame: Vec<f32> = (0..2048)
+            .map(|_| {
+                state = state.wrapping_mul(1_664_525).wrapping_add(1_013_904_223);
+                (state as i32 as f32) / i32::MAX as f32
+            })
+            .collect();
+        let max_tau = 960;
+        let direct = direct_difference(&frame, max_tau);
+
+        let w = frame.len() - max_tau;
+        let fft_len = (frame.len() + w - 1).next_power_of_two();
+        let mut planner = FftPlanner::<f32>::new();
+        let forward = planner.plan_fft_forward(fft_len);
+        let inverse = planner.plan_fft_inverse(fft_len);
+        let mut prefix = vec![Complex::new(0.0, 0.0); fft_len];
+        let mut signal = vec![Complex::new(0.0, 0.0); fft_len];
+        for (slot, &sample) in prefix.iter_mut().zip(&frame[..w]) {
+            slot.re = sample;
+        }
+        for (slot, &sample) in signal.iter_mut().zip(&frame) {
+            slot.re = sample;
+        }
+        forward.process(&mut prefix);
+        forward.process(&mut signal);
+        for (signal, prefix) in signal.iter_mut().zip(prefix) {
+            *signal *= prefix.conj();
+        }
+        inverse.process(&mut signal);
+        let mut energy = vec![0.0f32; frame.len() + 1];
+        for (i, sample) in frame.iter().enumerate() {
+            energy[i + 1] = energy[i] + sample * sample;
+        }
+        for tau in 0..=max_tau {
+            let estimate = energy[w] + energy[tau + w] - energy[tau] - 2.0 * signal[tau].re / fft_len as f32;
+            let scale = direct[tau].max(1.0);
+            assert!((estimate - direct[tau]).abs() <= scale * 2e-4, "tau={tau}: {estimate} != {}", direct[tau]);
+        }
     }
 
     #[test]
