@@ -7,6 +7,13 @@ use std::sync::Arc;
 use std::sync::mpsc::channel;
 use std::time::Duration;
 
+static RAISES: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
+
+fn raise_without_focus() -> bool {
+    RAISES.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+    true
+}
+
 /// A host frame with the given logical size and texture limit, native scale 1.0 and no events.
 fn raw_input(width: f32, height: f32, max_texture_side: usize) -> RawInput {
     let rect = Rect::from_min_size(pos2(0.0, 0.0), vec2(width, height));
@@ -22,6 +29,22 @@ fn raw_input(width: f32, height: f32, max_texture_side: usize) -> RawInput {
 /// A demo-backed app with no player, for control tests.
 fn app() -> SoundApp {
     SoundApp::new(soundcraft_engine::demo::demo_engine(), None, Services::default())
+}
+
+#[test]
+fn ui_requests_raise_without_focus_but_ui_focus_stays_explicit() {
+    let mut a = app();
+    a.raise_without_focus = Some(raise_without_focus);
+    let ctx = egui::Context::default();
+    RAISES.store(0, std::sync::atomic::Ordering::SeqCst);
+
+    let (req, _reply) = ControlRequest::new("ui.inspect", json!({}));
+    assert!(handle(&mut a, &ctx, &req).is_some());
+    assert_eq!(RAISES.load(std::sync::atomic::Ordering::SeqCst), 1);
+
+    let (req, _reply) = ControlRequest::new("ui.focus", json!({}));
+    assert!(handle(&mut a, &ctx, &req).is_some());
+    assert_eq!(RAISES.load(std::sync::atomic::Ordering::SeqCst), 1);
 }
 
 /// Run one real UI pass: feed raw input, then logic and UI, dropping texture deltas the tests do not inspect.

@@ -287,6 +287,8 @@ pub struct SoundApp {
     pub ui: UiState,
     pub audio_health_report: Option<Result<Value, String>>,
     pub services: Services,
+    /// Order the window forward for agent-driven UI requests without activating the app (macOS).
+    pub raise_without_focus: Option<fn() -> bool>,
     /// Set only by a desktop host after installing an OS menu bar.
     pub native_menu_bar: bool,
     /// Folder for crash-recovery autosaves (native apps set it).

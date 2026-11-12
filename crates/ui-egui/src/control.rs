@@ -9,7 +9,7 @@
 //! - `ui.click {x,y,button?,count?,mods?}`, `ui.move {x,y}`, `ui.drag {x,y,to_x,to_y,steps?}`
 //! - `ui.scroll {x,y,dx?,dy?,unit?,steps?,mods?}` (trackpad swipe or wheel), `ui.zoom {x,y,factor,steps?}` (pinch)
 //! - `ui.key {key, cmd?, shift?, alt?, ctrl?}`, `ui.text {text}`
-//! - `ui.screenshot {path?}` (PNG; base64 when no path), `ui.set {...UiState fields}`
+//! - `ui.screenshot {path?}` (PNG; base64 when no path), `ui.set {...UiState fields}`, `ui.focus`
 //! - `app.quit`
 //!
 //! Scripted-input methods reply only after a UI pass applied their events, and later requests wait
@@ -438,6 +438,13 @@ fn command_list(app: &mut SoundApp, p: &Value) -> Value {
 /// Dispatch one control method to commands, inspection, menus or queued scripted input. Methods that need a UI pass
 /// return `None` and reply later; everything else returns the reply for [`drain`] to send.
 fn handle(app: &mut SoundApp, ctx: &egui::Context, req: &ControlRequest) -> Option<Value> {
+    if req.method.starts_with("ui.") && req.method != "ui.focus" {
+        // UI requests need a rendered pass, but must not activate the app for an agent.
+        if let Some(raise_without_focus) = app.raise_without_focus {
+            raise_without_focus();
+        }
+        ctx.request_repaint();
+    }
     let p = &req.params;
     let f = |k: &str| p.get(k).and_then(Value::as_f64).unwrap_or(0.0) as f32;
     let pos = egui::pos2(f("x"), f("y"));
@@ -460,6 +467,11 @@ fn handle(app: &mut SoundApp, ctx: &egui::Context, req: &ControlRequest) -> Opti
             let mut v = app.inspect(ctx);
             v["edit_layout"] = json!(app.edit_layout);
             ok(v)
+        }
+        "ui.focus" => {
+            // Explicit request: activate the app and take keyboard focus.
+            ctx.send_viewport_cmd(egui::ViewportCommand::Focus);
+            ok(json!({}))
         }
         "ui.menu.list" => ok(json!(
             soundcraft_engine::catalog::catalog()
