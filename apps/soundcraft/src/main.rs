@@ -237,6 +237,11 @@ fn main() -> eframe::Result {
         event_loop_builder: agent_event_loop(agent),
         ..Default::default()
     };
+    // Keep an agent window behind normal application windows, even when eframe first shows it.
+    #[cfg(target_os = "macos")]
+    if agent {
+        options.viewport = options.viewport.with_window_level(egui::viewport::WindowLevel::AlwaysOnBottom);
+    }
     if let Some(icon) = app_icon() {
         options.viewport = options.viewport.with_icon(icon);
     }

@@ -440,6 +440,8 @@ fn command_list(app: &mut SoundApp, p: &Value) -> Value {
 fn handle(app: &mut SoundApp, ctx: &egui::Context, req: &ControlRequest) -> Option<Value> {
     if req.method.starts_with("ui.") && req.method != "ui.focus" {
         // UI requests need a rendered pass, but must not activate the app for an agent.
+        #[cfg(target_os = "macos")]
+        ctx.send_viewport_cmd(egui::ViewportCommand::WindowLevel(egui::viewport::WindowLevel::Normal));
         if let Some(raise_without_focus) = app.raise_without_focus {
             raise_without_focus();
         }
@@ -470,6 +472,8 @@ fn handle(app: &mut SoundApp, ctx: &egui::Context, req: &ControlRequest) -> Opti
         }
         "ui.focus" => {
             // Explicit request: activate the app and take keyboard focus.
+            #[cfg(target_os = "macos")]
+            ctx.send_viewport_cmd(egui::ViewportCommand::WindowLevel(egui::viewport::WindowLevel::Normal));
             ctx.send_viewport_cmd(egui::ViewportCommand::Focus);
             ok(json!({}))
         }
