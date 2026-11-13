@@ -44,6 +44,7 @@ impl SoundApp {
             ui: UiState::default(),
             audio_health_report: None,
             services,
+            raise_without_focus: None,
             native_menu_bar: false,
             autosave_dir: None,
             autosaver: None,

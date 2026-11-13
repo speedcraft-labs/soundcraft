@@ -21,6 +21,8 @@ mod logging;
 #[cfg(target_os = "macos")]
 mod native_menu;
 mod switch;
+#[cfg(target_os = "macos")]
+mod window_raise;
 
 use env::Env;
 use soundcraft_audio_io::FileFormat;
@@ -199,6 +201,7 @@ fn main() -> eframe::Result {
     // and a malformed switch is logged.
     let env = Env::read();
     let (demo, no_audio, control_port) = (launch.demo, launch.no_audio, launch.control_port);
+    let agent = control_port.is_some();
     let files = launch.files;
     log::info!("SoundCraft {}", soundcraft_automation::args::long_version());
     // The log file lives in the settings directory; opened after the arguments, so `--version`
@@ -228,7 +231,10 @@ fn main() -> eframe::Result {
             .with_maximized(prefs.window_maximized)
             .with_min_inner_size([960.0, 600.0])
             .with_drag_and_drop(true)
-            .with_app_id("ai.storyteller.soundcraft"),
+            .with_app_id("ai.storyteller.soundcraft")
+            // Started for an agent (`--control`): open without taking the user's keyboard focus.
+            .with_active(!agent),
+        event_loop_builder: agent_event_loop(agent),
         ..Default::default()
     };
     if let Some(icon) = app_icon() {
@@ -254,6 +260,10 @@ fn main() -> eframe::Result {
             let player =
                 if no_audio { None } else { Some(soundcraft_playback::Player::with_config(Arc::new(engine.session().clone()), &prefs.audio)) };
             let mut app = SoundApp::new(engine, player, services());
+            #[cfg(target_os = "macos")]
+            if agent {
+                app.raise_without_focus = Some(window_raise::raise_without_focus);
+            }
             app.set_startup_update_check(true);
             app.set_system_fonts(env.system_fonts());
             app.autosave_dir = env.config_dir.as_ref().map(|d| d.join("Autosave"));
@@ -289,6 +299,20 @@ fn main() -> eframe::Result {
             )))
         }),
     )
+}
+
+/// Driven by an agent (`--control`): don't activate the app on launch, so the user's keyboard
+/// focus stays where it is (macOS; winit activates ignoring other apps by default).
+fn agent_event_loop(agent: bool) -> Option<eframe::EventLoopBuilderHook> {
+    #[cfg(target_os = "macos")]
+    if agent {
+        return Some(Box::new(|b| {
+            use winit::platform::macos::EventLoopBuilderExtMacOS;
+            b.with_activate_ignoring_other_apps(false);
+        }));
+    }
+    let _ = agent;
+    None
 }
 
 /// A saved window size, or the default when the prefs file holds nonsense (NaN, negative, tiny).
