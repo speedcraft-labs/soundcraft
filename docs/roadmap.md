@@ -1,6 +1,10 @@
 # SoundCraft roadmap: milestones and what's next
 
+<<<<<<< HEAD
 > **Last reviewed:** 2026-11-07 · **Last updated:** 2026-11-07 · **Change:** minor (SoundCraft video uses the shared deterministic H.264 decoder) · **Target:** Avid Pro Tools Ultimate 2026.4.1
+=======
+> **Last reviewed:** 2026-11-05 · **Last updated:** 2026-11-05 · **Change:** trivial (M15: partial pt-BR catalog in PR #1346) · **Target:** Avid Pro Tools Ultimate 2026.4.1
+>>>>>>> 5976545fe1ddc1b2de85a483362876ecda8bbdcd
 
 Forward-looking plan. Status and numbers: [`../ROADMAP.md`](../ROADMAP.md) and
 [`target-app-parity.md`](target-app-parity.md); the ranked work list: [`gaps.md`](gaps.md).
@@ -49,7 +53,7 @@ Status: ✅ done · 🟡 in progress · ⬜ not started.
 | M12 | **Hardware**: audio interfaces, MIDI devices, sync, control surfaces | ⬜ | 110–180 |
 | M13 | **Interchange**: AAF/OMF import/export, disk streaming, record to disk | ⬜ | 65–115 |
 | M14 | **Fidelity harness** against Pro Tools (null tests, plugin responses) | ⬜ | 20–30 |
-| M15 | **Localization**: catalog, fonts/RTL, the 8 Pro Tools languages first | ⬜ (PRs #141, #143 open) | 70–110 |
+| M15 | **Localization**: catalog, fonts/RTL, the 8 Pro Tools languages first | 🟡 partial (pt-BR catalog; needs native review; PRs #141, #143 open) | 45–80 |
 | M16 | Built-in plugin depth, sidechain, ARA | ⬜ | 110–170 |
 | M17 | Immersive delivery (ADM BWF, object renderer, binaural) and video depth | ⬜ | 80–130 |
 
@@ -88,7 +92,11 @@ There is no `cargo xtask scorecard` in this repo; the measured number is `cargo 
 
 | Date | Change | Summary |
 |---|---|---|
+<<<<<<< HEAD
 | 2026-11-07 | minor | H.264 uses craft-libs 20cc689 with the app's single-thread default; conformance and damaged-stream determinism checked |
+=======
+| 2026-11-05 | trivial | M15: a pt-BR catalog covers menus and `text`/`localized_format!` strings; remains native review, CJK/RTL and the other languages. Estimates unchanged |
+>>>>>>> 5976545fe1ddc1b2de85a483362876ecda8bbdcd
 | 2026-10-25 | trivial | Record-workflow evidence: `setup.playback_engine` applies the device and buffer in the desktop app; headless returns `applied: false` |
 | 2026-10-24 | trivial | 27 built-in processors, as the plugin registry holds; the sampler (#108) is no longer listed under plugin essentials |
 | 2026-10-14 | trivial | M8: reject oversized MCP batches before execution (#460) |

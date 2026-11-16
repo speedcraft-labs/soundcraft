@@ -1062,6 +1062,7 @@ dependencies = [
 ]
 
 [[package]]
+<<<<<<< HEAD
 name = "craft-bitstream"
 version = "0.1.0"
 source = "git+https://github.com/storytold/craft-libs?rev=20cc6894fc3acf56042ab2b5144642ead4e487bd#20cc6894fc3acf56042ab2b5144642ead4e487bd"
@@ -1070,14 +1071,33 @@ dependencies = [
 ]
 
 [[package]]
+=======
+name = "craft-audio"
+version = "0.1.0"
+source = "git+https://github.com/storytold/craft-libs?rev=45a8e16669e70dadb780dfbc759c882dd5b7ea1c#45a8e16669e70dadb780dfbc759c882dd5b7ea1c"
+dependencies = [
+ "craft-media",
+ "log",
+ "serde",
+ "symphonia",
+ "thiserror 2.0.21",
+]
+
+[[package]]
+name = "craft-codepage"
+version = "0.1.0"
+source = "git+https://github.com/storytold/craft-libs?rev=ea24422ae9859dc5da398d0462bc87f8e02e0d10#ea24422ae9859dc5da398d0462bc87f8e02e0d10"
+
+[[package]]
+>>>>>>> 5976545fe1ddc1b2de85a483362876ecda8bbdcd
 name = "craft-docpath"
 version = "0.1.0"
-source = "git+https://github.com/storytold/craft-libs?rev=1b34eba41e62138fc2438d2734523b302840b45d#1b34eba41e62138fc2438d2734523b302840b45d"
+source = "git+https://github.com/storytold/craft-libs?rev=ea24422ae9859dc5da398d0462bc87f8e02e0d10#ea24422ae9859dc5da398d0462bc87f8e02e0d10"
 
 [[package]]
 name = "craft-fonts-build"
 version = "0.1.0"
-source = "git+https://github.com/storytold/craft-libs?rev=1b34eba41e62138fc2438d2734523b302840b45d#1b34eba41e62138fc2438d2734523b302840b45d"
+source = "git+https://github.com/storytold/craft-libs?rev=ea24422ae9859dc5da398d0462bc87f8e02e0d10#ea24422ae9859dc5da398d0462bc87f8e02e0d10"
 
 [[package]]
 name = "craft-h264"
@@ -1092,7 +1112,7 @@ dependencies = [
 [[package]]
 name = "craft-i18n"
 version = "0.1.0"
-source = "git+https://github.com/storytold/craft-libs?rev=1b34eba41e62138fc2438d2734523b302840b45d#1b34eba41e62138fc2438d2734523b302840b45d"
+source = "git+https://github.com/storytold/craft-libs?rev=ea24422ae9859dc5da398d0462bc87f8e02e0d10#ea24422ae9859dc5da398d0462bc87f8e02e0d10"
 dependencies = [
  "fixed_decimal",
  "icu_decimal",
@@ -1115,8 +1135,51 @@ dependencies = [
 [[package]]
 name = "craft-media"
 version = "0.1.0"
-source = "git+https://github.com/storytold/craft-libs?rev=1b34eba41e62138fc2438d2734523b302840b45d#1b34eba41e62138fc2438d2734523b302840b45d"
+source = "git+https://github.com/storytold/craft-libs?rev=45a8e16669e70dadb780dfbc759c882dd5b7ea1c#45a8e16669e70dadb780dfbc759c882dd5b7ea1c"
 dependencies = [
+ "serde",
+ "thiserror 2.0.21",
+]
+
+[[package]]
+name = "craft-midi"
+version = "0.1.0"
+source = "git+https://github.com/storytold/craft-libs?rev=45a8e16669e70dadb780dfbc759c882dd5b7ea1c#45a8e16669e70dadb780dfbc759c882dd5b7ea1c"
+dependencies = [
+ "serde",
+ "thiserror 2.0.21",
+]
+
+[[package]]
+name = "craft-mime"
+version = "0.1.0"
+source = "git+https://github.com/storytold/craft-libs?rev=ea24422ae9859dc5da398d0462bc87f8e02e0d10#ea24422ae9859dc5da398d0462bc87f8e02e0d10"
+dependencies = [
+ "chrono",
+ "craft-codepage",
+ "encoding_rs",
+]
+
+[[package]]
+name = "craft-scraft-format"
+version = "0.1.0"
+source = "git+https://github.com/storytold/craft-libs?rev=45a8e16669e70dadb780dfbc759c882dd5b7ea1c#45a8e16669e70dadb780dfbc759c882dd5b7ea1c"
+dependencies = [
+ "craft-audio",
+ "craft-midi",
+ "craft-time",
+ "craft-zip",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
+]
+
+[[package]]
+name = "craft-time"
+version = "0.1.0"
+source = "git+https://github.com/storytold/craft-libs?rev=45a8e16669e70dadb780dfbc759c882dd5b7ea1c#45a8e16669e70dadb780dfbc759c882dd5b7ea1c"
+dependencies = [
+ "serde",
  "thiserror 2.0.21",
 ]
 
@@ -1131,7 +1194,7 @@ dependencies = [
 [[package]]
 name = "craft-ui"
 version = "0.1.0"
-source = "git+https://github.com/storytold/craft-libs?rev=1b34eba41e62138fc2438d2734523b302840b45d#1b34eba41e62138fc2438d2734523b302840b45d"
+source = "git+https://github.com/storytold/craft-libs?rev=ea24422ae9859dc5da398d0462bc87f8e02e0d10#ea24422ae9859dc5da398d0462bc87f8e02e0d10"
 dependencies = [
  "craft-fonts-build",
  "craft-i18n",
@@ -1152,7 +1215,7 @@ dependencies = [
 [[package]]
 name = "craft-update"
 version = "0.1.0"
-source = "git+https://github.com/storytold/craft-libs?rev=1b34eba41e62138fc2438d2734523b302840b45d#1b34eba41e62138fc2438d2734523b302840b45d"
+source = "git+https://github.com/storytold/craft-libs?rev=ea24422ae9859dc5da398d0462bc87f8e02e0d10#ea24422ae9859dc5da398d0462bc87f8e02e0d10"
 dependencies = [
  "chrono",
  "dunce",
@@ -1162,6 +1225,7 @@ dependencies = [
  "image",
  "log",
  "plist",
+ "rustix 1.1.5",
  "semver",
  "serde",
  "serde_json",
@@ -1172,6 +1236,35 @@ dependencies = [
  "verifysign",
  "winreg",
  "winsafe",
+ "zip",
+]
+
+[[package]]
+name = "craft-video"
+version = "0.1.0"
+source = "git+https://github.com/storytold/craft-libs?rev=45a8e16669e70dadb780dfbc759c882dd5b7ea1c#45a8e16669e70dadb780dfbc759c882dd5b7ea1c"
+dependencies = [
+ "craft-media",
+ "rayon",
+ "thiserror 2.0.21",
+]
+
+[[package]]
+name = "craft-xml"
+version = "0.1.0"
+source = "git+https://github.com/storytold/craft-libs?rev=ea24422ae9859dc5da398d0462bc87f8e02e0d10#ea24422ae9859dc5da398d0462bc87f8e02e0d10"
+dependencies = [
+ "quick-xml 0.41.0",
+ "thiserror 2.0.21",
+]
+
+[[package]]
+name = "craft-zip"
+version = "0.1.0"
+source = "git+https://github.com/storytold/craft-libs?rev=45a8e16669e70dadb780dfbc759c882dd5b7ea1c#45a8e16669e70dadb780dfbc759c882dd5b7ea1c"
+dependencies = [
+ "flate2",
+ "thiserror 2.0.21",
  "zip",
 ]
 
@@ -1506,6 +1599,20 @@ version = "0.37.0"
 source = "git+https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc799681571963842f95b55a6b68431b15a"
 dependencies = [
  "bytemuck",
+]
+
+[[package]]
+name = "encoding_rs"
+version = "0.8.44"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "89253175e704ab869b04f9db224d38630e0211a53841a79181deae0889e169f5"
+dependencies = [
+ "cfg-if",
+ "core_detect",
+ "multiversion_no_op",
+ "rustversion",
+ "scopeguard",
+ "simdutf8",
 ]
 
 [[package]]
@@ -2710,6 +2817,12 @@ dependencies = [
  "thiserror 2.0.21",
  "windows-sys 0.61.2",
 ]
+
+[[package]]
+name = "multiversion_no_op"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "743fb55ba31b18fb1ecef6bdc9aa2743314978ac084044301a7eee33fb99a20d"
 
 [[package]]
 name = "naga"
@@ -4356,10 +4469,11 @@ dependencies = [
 
 [[package]]
 name = "soundcraft"
-version = "0.17.0"
+version = "0.20.1"
 dependencies = [
  "chrono",
  "clap",
+ "craft-audio",
  "craft-update",
  "eframe",
  "egui",
@@ -4369,7 +4483,6 @@ dependencies = [
  "objc2-app-kit 0.3.2",
  "rfd",
  "serde_json",
- "soundcraft-audio-io",
  "soundcraft-automation",
  "soundcraft-engine",
  "soundcraft-playback",
@@ -4380,7 +4493,7 @@ dependencies = [
 
 [[package]]
 name = "soundcraft-au-host"
-version = "0.17.0"
+version = "0.20.1"
 dependencies = [
  "log",
  "serde",
@@ -4389,25 +4502,13 @@ dependencies = [
 ]
 
 [[package]]
-name = "soundcraft-audio-io"
-version = "0.17.0"
-dependencies = [
- "log",
- "proptest",
- "serde",
- "serde_json",
- "symphonia",
- "thiserror 2.0.21",
-]
-
-[[package]]
 name = "soundcraft-automation"
-version = "0.17.0"
+version = "0.20.1"
 dependencies = [
  "clap",
+ "craft-audio",
  "log",
  "serde_json",
- "soundcraft-audio-io",
  "soundcraft-engine",
  "soundcraft-time",
  "thiserror 2.0.21",
@@ -4415,7 +4516,7 @@ dependencies = [
 
 [[package]]
 name = "soundcraft-clap-host"
-version = "0.17.0"
+version = "0.20.1"
 dependencies = [
  "clap-sys",
  "libloading 0.9.0",
@@ -4428,16 +4529,16 @@ dependencies = [
 
 [[package]]
 name = "soundcraft-cli"
-version = "0.17.0"
+version = "0.20.1"
 dependencies = [
  "clap",
  "clap_complete",
  "clap_mangen",
+ "craft-audio",
  "log",
  "same-file",
  "serde",
  "serde_json",
- "soundcraft-audio-io",
  "soundcraft-automation",
  "soundcraft-dsp",
  "soundcraft-engine",
@@ -4446,7 +4547,7 @@ dependencies = [
 
 [[package]]
 name = "soundcraft-dsp"
-version = "0.17.0"
+version = "0.20.1"
 dependencies = [
  "log",
  "proptest",
@@ -4457,15 +4558,17 @@ dependencies = [
 
 [[package]]
 name = "soundcraft-engine"
-version = "0.17.0"
+version = "0.20.1"
 dependencies = [
+ "craft-audio",
  "craft-docpath",
+ "craft-scraft-format",
+ "craft-xml",
  "log",
  "proptest",
  "serde",
  "serde_json",
  "soundcraft-au-host",
- "soundcraft-audio-io",
  "soundcraft-clap-host",
  "soundcraft-dsp",
  "soundcraft-midi",
@@ -4475,27 +4578,26 @@ dependencies = [
  "soundcraft-video",
  "soundcraft-vst3-host",
  "thiserror 2.0.21",
+ "winsafe",
  "zip",
 ]
 
 [[package]]
 name = "soundcraft-midi"
-version = "0.17.0"
+version = "0.20.1"
 dependencies = [
+ "craft-midi",
  "proptest",
- "serde",
- "serde_json",
- "thiserror 2.0.21",
 ]
 
 [[package]]
 name = "soundcraft-mix"
-version = "0.17.0"
+version = "0.20.1"
 dependencies = [
+ "craft-audio",
  "log",
  "rayon",
  "soundcraft-au-host",
- "soundcraft-audio-io",
  "soundcraft-clap-host",
  "soundcraft-dsp",
  "soundcraft-midi",
@@ -4506,26 +4608,20 @@ dependencies = [
 
 [[package]]
 name = "soundcraft-model"
-version = "0.17.0"
+version = "0.20.1"
 dependencies = [
- "proptest",
- "serde",
- "serde_json",
- "soundcraft-audio-io",
- "soundcraft-midi",
- "soundcraft-time",
- "thiserror 2.0.21",
+ "craft-scraft-format",
 ]
 
 [[package]]
 name = "soundcraft-playback"
-version = "0.17.0"
+version = "0.20.1"
 dependencies = [
  "cpal",
+ "craft-audio",
  "log",
  "serde",
  "serde_json",
- "soundcraft-audio-io",
  "soundcraft-dsp",
  "soundcraft-mix",
  "soundcraft-model",
@@ -4534,18 +4630,17 @@ dependencies = [
 
 [[package]]
 name = "soundcraft-time"
-version = "0.17.0"
+version = "0.20.1"
 dependencies = [
- "proptest",
- "serde",
- "serde_json",
- "thiserror 2.0.21",
+ "craft-time",
 ]
 
 [[package]]
 name = "soundcraft-ui-egui"
-version = "0.17.0"
+version = "0.20.1"
 dependencies = [
+ "craft-audio",
+ "craft-mime",
  "craft-ui",
  "craft-update",
  "egui",
@@ -4556,7 +4651,6 @@ dependencies = [
  "serde",
  "serde_json",
  "soundcraft-au-host",
- "soundcraft-audio-io",
  "soundcraft-clap-host",
  "soundcraft-dsp",
  "soundcraft-engine",
@@ -4574,20 +4668,24 @@ dependencies = [
 
 [[package]]
 name = "soundcraft-video"
-version = "0.17.0"
+version = "0.20.1"
 dependencies = [
+<<<<<<< HEAD
  "craft-h264",
  "craft-media 0.1.0 (git+https://github.com/storytold/craft-libs?rev=1b34eba41e62138fc2438d2734523b302840b45d)",
+=======
+ "craft-media",
+ "craft-video",
+>>>>>>> 5976545fe1ddc1b2de85a483362876ecda8bbdcd
  "image",
  "proptest",
- "rayon",
  "serde",
  "thiserror 2.0.21",
 ]
 
 [[package]]
 name = "soundcraft-vst3-host"
-version = "0.17.0"
+version = "0.20.1"
 dependencies = [
  "libloading 0.9.0",
  "log",
@@ -4603,15 +4701,15 @@ dependencies = [
 
 [[package]]
 name = "soundcraft-web"
-version = "0.17.0"
+version = "0.20.1"
 dependencies = [
+ "craft-audio",
  "eframe",
  "egui",
  "js-sys",
  "log",
  "rfd",
  "serde_json",
- "soundcraft-audio-io",
  "soundcraft-engine",
  "soundcraft-model",
  "soundcraft-playback",
@@ -6251,7 +6349,7 @@ checksum = "e450f9b2ed1dff33c94c12589a87338689467b9c4f5d8a5710bd09a847d2c8a7"
 
 [[package]]
 name = "xtask"
-version = "0.17.0"
+version = "0.20.1"
 dependencies = [
  "serde_json",
 ]

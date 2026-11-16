@@ -23,6 +23,7 @@ jobs:
     uses: storytold/craft-common-actions/.github/workflows/nix.yml@main
 
   git-sources:
+<<<<<<< HEAD
     name: Git dependencies come from storytold
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -59,3 +60,7 @@ jobs:
               print("Git dependencies outside github.com/storytold:", *bad, sep="\n")
               sys.exit(1)
           PY
+=======
+    # Tracks @main so suite-wide CI fixes reach every app without a PR in each repository.
+    uses: storytold/craft-common-actions/.github/workflows/git-sources.yml@main
+>>>>>>> 5976545fe1ddc1b2de85a483362876ecda8bbdcd
